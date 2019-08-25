@@ -1,0 +1,11 @@
+logging:
+  level:
+    com: WARN
+    
+spring:
+  profiles: prod
+
+  datasource:
+    url: jdbc:mysql://localhost/testdb
+    username: username
+    password: password
