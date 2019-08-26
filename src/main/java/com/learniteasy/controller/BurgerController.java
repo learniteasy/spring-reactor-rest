@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.learniteasy.dao.BurgerRepository2;
 import com.learniteasy.model.Burger;
 import com.learniteasy.service.BurgerService;
 
@@ -22,8 +22,13 @@ import reactor.core.publisher.Mono;
 
 @RestController
 public class BurgerController {
+	
 	@Autowired
 	private BurgerService burgerServiceImpl;
+	
+	//Directly calling spring data-repo
+	@Autowired
+	private BurgerRepository2 burgerRepo;
 
 	@RequestMapping(value = { "/create", "/" }, method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
@@ -63,6 +68,13 @@ public class BurgerController {
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable("id") Integer id) {
 		burgerServiceImpl.delete(id).subscribe();
+	}
+	
+	//Directly calling spring data-repo 
+	@PostMapping(consumes="application/json" )
+	@ResponseStatus(HttpStatus.CREATED)
+	public Mono<Burger> postTaco(@RequestBody Mono<Burger> tacoMono) {
+	return burgerRepo.saveAll(tacoMono).next();
 	}
 
 }
