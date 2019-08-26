@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
  
 public interface BurgerService
 {
-    void create(Burger e);
+	void create(Burger e) ;
      
     Mono<Burger> findById(Integer id);
  

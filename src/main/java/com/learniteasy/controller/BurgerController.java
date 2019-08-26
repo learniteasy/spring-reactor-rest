@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,11 +27,11 @@ public class BurgerController {
 
 	@RequestMapping(value = { "/create", "/" }, method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	@ResponseBody
 	public void create(@RequestBody Burger e) {
 		burgerServiceImpl.create(e);
 	}
 
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<Mono<Burger>> findById(@PathVariable("id") Integer id) {
@@ -47,7 +49,7 @@ public class BurgerController {
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	@ResponseBody
 	public Flux<Burger> findAll() {
-		Flux<Burger> emps = burgerServiceImpl.findAll();
+		Flux<Burger> emps = burgerServiceImpl.findAll().take(12);
 		return emps;
 	}
 

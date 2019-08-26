@@ -1,26 +1,31 @@
 package com.learniteasy.model;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import lombok.Data;
  
 @Data
-@Scope(scopeName = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@RestResource(rel = "burger", path = "burger")
 @Document
 public class Burger {
- 
-    @Id
-    int id;
-    
-    String type;
-    long price;
 
- 
-    @Override
-    public String toString() {
-        return "Employee [id=" + id + ", type=" + type + ", price=" + price + "]";
-    }    
+  @Id
+  private String id;
+  
+  @NotNull
+  @Size(min = 5, message = "Name must be at least 5 characters long")
+  private String type;
+  
+  private Date createdAt = new Date();
+  
+  @NotNull
+  private float price;
+
 }
